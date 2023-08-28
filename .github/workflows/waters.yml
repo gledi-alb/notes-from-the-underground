@@ -36,3 +36,11 @@ jobs:
 
       - name: Install dependencies
         run: pnpm install
+
+      - name: Check for make
+        run: |
+          echo "Hello"
+          cat /etc/issue.net
+          which make
+          make --version
+      
