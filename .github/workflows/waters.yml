@@ -20,8 +20,6 @@ jobs:
       name: ${{ github.event.inputs.env_name }}
 
     steps:
-      - uses: actions/checkout@v4
-
       - name: Save ${{ github.event.inputs.env_name }} Secrets
         shell: bash
         run: |
