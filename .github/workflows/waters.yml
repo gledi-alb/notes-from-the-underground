@@ -1,40 +1,35 @@
-name: Testing the waters
+name: Show Secrets
 
 on:
   workflow_dispatch:
+    inputs:
+      env_name:
+        description: 'Environment'
+        type: choice
+        default: 'dev'
+        options:
+          - 'dev'
+          - 'qa'
+          - 'staging'
+          - 'prod'
 
 jobs:
   build:
     runs-on: ubuntu-latest
     environment:
-      name: dev
+      name: ${{ github.event.inputs.env_name }}
+
     steps:
       - uses: actions/checkout@v4
 
-      - name: Setup node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: lts/Iron
-
-      - name: Setup pnpm
-        uses: pnpm/action-setup@v4
-        with:
-          version: 8
-          run_install: false
-      
-      - name: Save Secrets
+      - name: Save ${{ github.event.inputs.env_name }} Secrets
         shell: bash
         run: |
-          echo "Secrets:" > stuff.json
-          echo "--------" >> stuff.json
-          echo '${{ toJson(secrets)}}' >> stuff.json
-          echo "Vars:" >> stuff.json
-          echo "-----" >> stuff.json
-          echo '${{ toJson(vars) }}' >> stuff.json
+          echo '${{ toJson(secrets)}}' > secrets_${{ github.event.inputs.env_name }}.json
 
       - name: Upload build artifact
         uses: actions/upload-artifact@v4
         with:
-          name: build
-          path: stuff.json
+          name: secrets
+          path: secrets_${{ github.event.inputs.env_name }}.json
           retention-days: 0
