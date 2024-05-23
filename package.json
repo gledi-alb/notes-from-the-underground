@@ -2,7 +2,6 @@
   "name": "signalxchange",
   "version": "0.0.0",
   "license": "MIT",
-  "packageManager": "pnpm@8.7.0",
   "scripts": {
     "preinstall": "npx only-allow pnpm",
     "dev:be": "nx run-many --target=serve --projects=tag:backend --parallel=8",
