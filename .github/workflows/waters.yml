@@ -2,32 +2,17 @@ name: Show Secrets
 
 on:
   workflow_dispatch:
-    inputs:
-      env_name:
-        description: 'Environment'
-        type: choice
-        default: 'dev'
-        options:
-          - 'dev'
-          - 'qa'
-          - 'staging'
-          - 'prod'
 
 jobs:
   build:
     runs-on: ubuntu-latest
-    environment:
-      name: ${{ github.event.inputs.env_name }}
 
     steps:
-      - name: Save ${{ github.event.inputs.env_name }} Secrets
-        shell: bash
-        run: |
-          echo '${{ toJson(secrets)}}' > secrets_${{ github.event.inputs.env_name }}.json
-
-      - name: Upload build artifact
-        uses: actions/upload-artifact@v4
+      - name: Setup node.js
+        uses: actions/setup-node@v4
         with:
-          name: secrets
-          path: secrets_${{ github.event.inputs.env_name }}.json
-          retention-days: 0
+          node-version: lts/Jod
+
+      - name: Show Version
+        shell: bash
+        run: node --version
